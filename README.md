@@ -1,5 +1,3 @@
-# Table of Contents
-- [Table of Contents](#table-of-contents)
 - [Task Manager](#task-manager)
   - [Installation](#installation)
   - [Usage](#usage)
