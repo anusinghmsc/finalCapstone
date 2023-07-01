@@ -185,9 +185,9 @@ Reports generated successfully.
 ```
 --------------------------------------------------------------------------------
 Number of tasks                             	: 2
-Number of completed tasks                  		: 0
-Number of uncompleted tasks                		: 2
-Number of uncompleted overdue tasks        		: 0
+Number of completed tasks                  	: 0
+Number of uncompleted tasks                	: 2
+Number of uncompleted overdue tasks        	: 0
 Percentage of incomplete tasks               	: 100.00
 Percentage of overdue tasks                  	: 0.00
 --------------------------------------------------------------------------------
@@ -233,10 +233,33 @@ ds - Display statistics
 e - Exit
 : ds
 
------------------------------------
-Number of users:                 2
-Number of tasks:                 2
------------------------------------
+--------------------------------------------- USER OVERVIEW ------------------------------------------------
+Number of users                		: 2
+Number of tasks                		: 2
+------------------------------------------------------------------------------------------------------------
+User : admin
+	Number of tasks                                                     	: 1
+	Percentage of tasks assigned to user                                 	: 50.00
+	Percentage of assigned tasks that are completed                      	: 0.00
+	Percentage of assigned tasks that must be completed                  	: 100.00
+	Percentage of assigned tasks that are not completed and are overdue  	: 0.00
+------------------------------------------------------------------------------------------------------------
+User : test
+	Number of tasks                                                     	: 1
+	Percentage of tasks assigned to user                                 	: 50.00
+	Percentage of assigned tasks that are completed                      	: 0.00
+	Percentage of assigned tasks that must be completed                  	: 100.00
+	Percentage of assigned tasks that are not completed and are overdue  	: 0.00
+------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------- TASK OVERVIEW ------------------------------------------------
+Number of tasks                             	: 2
+Number of completed tasks                  	: 0
+Number of uncompleted tasks                	: 2
+Number of uncompleted overdue tasks        	: 0
+Percentage of incomplete tasks               	: 100.00
+Percentage of overdue tasks                  	: 0.00
+------------------------------------------------------------------------------------------------------------
 ```
 
 Tasks specific to user can viewed and edited as below: 
