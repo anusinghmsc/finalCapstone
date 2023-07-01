@@ -170,34 +170,29 @@ d - edit the due date of the selected task
                         selected_task["assigned_date"].strftime(DATETIME_STRING_FORMAT),
                         "Yes" if selected_task["completed"] else "No",
                     ]
-                    task_to_replace = ";".join(str_attrs) + "\n"
+                    task_to_replace = ";".join(str_attrs)
+
+                    selected_task["completed"] = True
+                    str_attrs = [
+                        selected_task["username"],
+                        selected_task["title"],
+                        selected_task["description"],
+                        selected_task["due_date"].strftime(DATETIME_STRING_FORMAT),
+                        selected_task["assigned_date"].strftime(DATETIME_STRING_FORMAT),
+                        "Yes" if selected_task["completed"] else "No",
+                    ]
+
+                    new_task = ";".join(str_attrs)
 
                     with open("tasks.txt", "r") as read_task_file:
                         update_task_data = read_task_file.read().replace(
-                            task_to_replace, ""
+                            task_to_replace, new_task
                         )
 
                     with open("tasks.txt", "w") as update_task_file:
                         update_task_file.write(update_task_data)
-                        selected_task["completed"] = True
 
-                        task_list_to_write = []
-                        str_attrs = [
-                            selected_task["username"],
-                            selected_task["title"],
-                            selected_task["description"],
-                            selected_task["due_date"].strftime(DATETIME_STRING_FORMAT),
-                            selected_task["assigned_date"].strftime(
-                                DATETIME_STRING_FORMAT
-                            ),
-                            "Yes" if selected_task["completed"] else "No",
-                        ]
-
-                        new_task = "\n" + ";".join(str_attrs)
-                        task_list_to_write.append(new_task)
-                        update_task_file.write("\n".join(task_list_to_write))
-
-                        print("\nTask successfully updated.")
+                    print("\nTask successfully updated.")
 
                 elif edit_option == "u":
                     task_username = input(
@@ -216,34 +211,30 @@ d - edit the due date of the selected task
                         selected_task["assigned_date"].strftime(DATETIME_STRING_FORMAT),
                         "Yes" if selected_task["completed"] else "No",
                     ]
+
                     task_to_replace = ";".join(str_attrs)
+
+                    selected_task["username"] = task_username
+                    str_attrs = [
+                        selected_task["username"],
+                        selected_task["title"],
+                        selected_task["description"],
+                        selected_task["due_date"].strftime(DATETIME_STRING_FORMAT),
+                        selected_task["assigned_date"].strftime(DATETIME_STRING_FORMAT),
+                        "Yes" if selected_task["completed"] else "No",
+                    ]
+
+                    new_task = ";".join(str_attrs)
 
                     with open("tasks.txt", "r") as read_task_file:
                         update_task_data = read_task_file.read().replace(
-                            task_to_replace, ""
+                            task_to_replace, new_task
                         )
 
                     with open("tasks.txt", "w") as update_task_file:
                         update_task_file.write(update_task_data)
-                        selected_task["username"] = task_username
 
-                        task_list_to_write = []
-                        str_attrs = [
-                            selected_task["username"],
-                            selected_task["title"],
-                            selected_task["description"],
-                            selected_task["due_date"].strftime(DATETIME_STRING_FORMAT),
-                            selected_task["assigned_date"].strftime(
-                                DATETIME_STRING_FORMAT
-                            ),
-                            "Yes" if selected_task["completed"] else "No",
-                        ]
-
-                        new_task = "\n" + ";".join(str_attrs)
-                        task_list_to_write.append(new_task)
-                        update_task_file.write("\n".join(task_list_to_write))
-
-                        print("\nUsername successfully updated.")
+                    print("\nUsername successfully updated.")
 
                 elif edit_option == "d":
                     due_date = input(
@@ -258,36 +249,31 @@ d - edit the due date of the selected task
                         selected_task["assigned_date"].strftime(DATETIME_STRING_FORMAT),
                         "Yes" if selected_task["completed"] else "No",
                     ]
-                    task_to_replace = ";".join(str_attrs) + "\n"
+                    task_to_replace = ";".join(str_attrs)
+
+                    selected_task["due_date"] = datetime.strptime(
+                        due_date, DATETIME_STRING_FORMAT
+                    )
+                    str_attrs = [
+                        selected_task["username"],
+                        selected_task["title"],
+                        selected_task["description"],
+                        selected_task["due_date"].strftime(DATETIME_STRING_FORMAT),
+                        selected_task["assigned_date"].strftime(DATETIME_STRING_FORMAT),
+                        "Yes" if selected_task["completed"] else "No",
+                    ]
+
+                    new_task = ";".join(str_attrs)
 
                     with open("tasks.txt", "r") as read_task_file:
                         update_task_data = read_task_file.read().replace(
-                            task_to_replace, ""
+                            task_to_replace, new_task
                         )
 
                     with open("tasks.txt", "w") as update_task_file:
                         update_task_file.write(update_task_data)
-                        selected_task["due_date"] = datetime.strptime(
-                            due_date, DATETIME_STRING_FORMAT
-                        )
 
-                        task_list_to_write = []
-                        str_attrs = [
-                            selected_task["username"],
-                            selected_task["title"],
-                            selected_task["description"],
-                            selected_task["due_date"].strftime(DATETIME_STRING_FORMAT),
-                            selected_task["assigned_date"].strftime(
-                                DATETIME_STRING_FORMAT
-                            ),
-                            "Yes" if selected_task["completed"] else "No",
-                        ]
-
-                        new_task = "\n" + ";".join(str_attrs)
-                        task_list_to_write.append(new_task)
-                        update_task_file.write("\n".join(task_list_to_write))
-
-                        print("\nDue date successfully updated.")
+                    print("\nDue date successfully updated.")
 
                 elif edit_option == "-1":
                     return
@@ -313,7 +299,7 @@ d - edit the due date of the selected task
         return
 
 
-def generate_task_overview():
+def generate_task_overview(gr):
     num_tasks = len(task_list)
 
     completed_tasks = 0
@@ -327,68 +313,93 @@ def generate_task_overview():
                 overdue_tasks += 1
 
     if num_tasks > 0:
-        incomplete_tasks_percentage = round((num_tasks - completed_tasks) * 100 / num_tasks)
+        incomplete_tasks_percentage = round(
+            (num_tasks - completed_tasks) * 100 / num_tasks
+        )
         overdue_tasks_percentage = round((overdue_tasks) * 100 / num_tasks)
     else:
         incomplete_tasks_percentage = 0.00
         overdue_tasks_percentage = 0.00
 
-    with open("task_overview.txt", "w") as task_overview:
-        task_overview_report = "--------------------------------------------------------------------------------"
-        task_overview_report += f"\nNumber of tasks                             \t: {num_tasks}"
-        task_overview_report += (f"\nNumber of completed tasks                  \t\t: {completed_tasks}")
-        task_overview_report += (f"\nNumber of uncompleted tasks                \t\t: {num_tasks - completed_tasks}")
-        task_overview_report += (f"\nNumber of uncompleted overdue tasks        \t\t: {overdue_tasks}")
-        task_overview_report += "\nPercentage of incomplete tasks               \t: {:0.2f}".format(incomplete_tasks_percentage)
-        task_overview_report += "\nPercentage of overdue tasks                  \t: {:0.2f}".format(overdue_tasks_percentage)
-        task_overview_report += ("\n--------------------------------------------------------------------------------")
-        task_overview.write(task_overview_report)
+    task_overview_report = "----------------------------------------------- TASK OVERVIEW ----------------------------------------------"
+    task_overview_report += (
+        f"\nNumber of tasks                             \t: {num_tasks}"
+    )
+    task_overview_report += (
+        f"\nNumber of completed tasks                   \t: {completed_tasks}"
+    )
+    task_overview_report += (
+        f"\nNumber of uncompleted tasks                 \t: {num_tasks - completed_tasks}"
+    )
+    task_overview_report += (
+        f"\nNumber of uncompleted overdue tasks         \t: {overdue_tasks}"
+    )
+    task_overview_report += (
+        "\nPercentage of incomplete tasks               \t: {:0.2f}".format(
+            incomplete_tasks_percentage
+        )
+    )
+    task_overview_report += (
+        "\nPercentage of overdue tasks                  \t: {:0.2f}".format(
+            overdue_tasks_percentage
+        )
+    )
+    task_overview_report += "\n------------------------------------------------------------------------------------------------------------"
+
+    if gr:
+        with open("task_overview.txt", "w") as task_overview:
+            task_overview.write(task_overview_report)
+    else:
+        print(task_overview_report)
 
 
-def generate_user_overview():
+def generate_user_overview(gr):
     num_users = len(username_password.keys())
     num_tasks = len(task_list)
 
-    with open("user_overview.txt", "w") as user_overview:
-        user_overview_report = "------------------------------------------------------------------------------------------------------------"
-        user_overview_report += f"\nNumber of users                \t\t: {num_users}"
-        user_overview_report += f"\nNumber of tasks                \t\t: {num_tasks}"
+    user_overview_report = "------------------------------------------------------------------------------------------------------------"
+    user_overview_report += f"\nNumber of users                \t\t: {num_users}"
+    user_overview_report += f"\nNumber of tasks                \t\t: {num_tasks}"
+    user_overview_report += "\n----------------------------------------------- USER OVERVIEW ----------------------------------------------"
+
+    for username in username_password.keys():
+        user_tasks = 0
+        user_completed_tasks = 0
+        user_overdue_tasks = 0
+
+        for task in task_list:
+            if task["username"] == username:
+                user_tasks += 1
+                if task["completed"]:
+                    user_completed_tasks += 1
+                else:
+                    is_user_task_overdue = datetime.today() > task["due_date"]
+                    if is_user_task_overdue:
+                        user_overdue_tasks += 1
+
+        user_overview_report += f"\nUser : {username}"
+        user_overview_report += f"\n\tNumber of tasks                                                     \t: {user_tasks}"
+        user_overview_report += "\n\tPercentage of tasks assigned to user                                 \t: {:0.2f}".format(
+            user_tasks * 100 / num_tasks if num_tasks > 0 else 0
+        )
+        user_overview_report += "\n\tPercentage of assigned tasks that are completed                      \t: {:0.2f}".format(
+            user_completed_tasks * 100 / user_tasks if user_tasks > 0 else 0
+        )
+        user_overview_report += "\n\tPercentage of assigned tasks that must be completed                  \t: {:0.2f}".format(
+            (user_tasks - user_completed_tasks) * 100 / user_tasks
+            if user_tasks > 0
+            else 0
+        )
+        user_overview_report += "\n\tPercentage of assigned tasks that are not completed and are overdue  \t: {:0.2f}".format(
+            user_overdue_tasks * 100 / user_tasks if user_tasks > 0 else 0
+        )
         user_overview_report += "\n------------------------------------------------------------------------------------------------------------"
 
-        for username in username_password.keys():
-            user_tasks = 0
-            user_completed_tasks = 0
-            user_overdue_tasks = 0
-
-            for task in task_list:
-                if task["username"] == username:
-                    user_tasks += 1
-                    if task["completed"]:
-                        user_completed_tasks += 1
-                    else:
-                        is_user_task_overdue = datetime.today() > task["due_date"]
-                        if is_user_task_overdue:
-                            user_overdue_tasks += 1
-
-            user_overview_report += f"\nUser : {username}"
-            user_overview_report += f"\n\tNumber of tasks                                                     \t: {user_tasks}"
-            user_overview_report += "\n\tPercentage of tasks assigned to user                                 \t: {:0.2f}".format(
-                user_tasks * 100 / num_tasks if num_tasks > 0 else 0
-            )
-            user_overview_report += "\n\tPercentage of assigned tasks that are completed                      \t: {:0.2f}".format(
-                user_completed_tasks * 100 / user_tasks if user_tasks > 0 else 0
-            )
-            user_overview_report += "\n\tPercentage of assigned tasks that must be completed                  \t: {:0.2f}".format(
-                (user_tasks - user_completed_tasks) * 100 / user_tasks
-                if user_tasks > 0
-                else 0
-            )
-            user_overview_report += "\n\tPercentage of assigned tasks that are not completed and are overdue  \t: {:0.2f}".format(
-                user_overdue_tasks * 100 / user_tasks if user_tasks > 0 else 0
-            )
-            user_overview_report += "\n------------------------------------------------------------------------------------------------------------"
-
-        user_overview.write(user_overview_report)
+    if gr:
+        with open("user_overview.txt", "w") as user_overview:
+            user_overview.write(user_overview_report)
+    else:
+        print(user_overview_report)
 
 
 DATETIME_STRING_FORMAT = "%Y-%m-%d"
@@ -500,21 +511,16 @@ e - Exit
     elif menu == "ds" and curr_user == "admin":
         """If the user is an admin they can display statistics about number of users
         and tasks."""
-        num_users = len(username_password.keys())
-        num_tasks = len(task_list)
 
-        print("\n-----------------------------------")
-        print(f"Number of users: \t\t {num_users}")
-        print(f"Number of tasks: \t\t {num_tasks}")
-        print("-----------------------------------")
+        generate_user_overview(False)
+        generate_task_overview(False)
 
     elif menu == "gr" and curr_user == "admin":
-        """If the user is an admin they can display statistics about number of users
+        """If the user is an admin they can generate reports about number of users
         and tasks."""
 
-        generate_task_overview()
-
-        generate_user_overview()
+        generate_user_overview(True)
+        generate_task_overview(True)
 
         print("\nReports generated successfully.")
 
